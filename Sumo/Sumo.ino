@@ -151,6 +151,7 @@ class Motor{
     DigitalActuator pinLeft = new DigitalActuator(0);
     DigitalActuator pinRight = new DigitalActuator(0);
   public:
+  Motor(void){}
   Motor(int pinLeft,int pinRight){
     this->pinLeft.setPin(pinLeft);
     this->pinRight.setPin(pinRight);
@@ -173,15 +174,15 @@ class Motor{
   }
 };
 
-/*class Move{
+class Move{
   private:
-    Motor MotorL;
-    Motor MotorR;
+    Motor MotorL = new Motor();
+    Motor MotorR = new Motor();
   public:
     Move(Motor ML){
       this->MotorL = ML;
     }
-};*/
+};
 
 //-------------------------------------
 /*
