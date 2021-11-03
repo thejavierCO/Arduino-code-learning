@@ -13,8 +13,12 @@ class Pin{
     Pin(int pin){
       this->_pin = pin;
     }
+    Pin(void){}
     int getPin(){
       return this->_pin;
+    }
+    void setPin(int pin){
+      this->_pin = pin;
     }
     void Out(){
       pinMode(this->_pin,OUTPUT);
@@ -41,7 +45,7 @@ class DigitalPin: public Pin {
 class AnalogPin: public Pin {
   public:
     AnalogPin(int pin):Pin(pin){};
-    int Read(){
+    long Read(){
       return analogRead(this->getPin());
     }
     void Write(int state){
@@ -88,12 +92,6 @@ class AnalogActuator: public AnalogPin{
       if(this->If(false))this->Set(rangeOn);
       else if(this->If(true))this->Set(rangeOff);
     }
-};
-
-class DigitalSensor: public DigitalActuator{
-};
-
-class DigitalSensor: public DigitalActuator{
 };
 
 class Led: public DigitalActuator{
@@ -147,6 +145,43 @@ class LedPWM:public AnalogActuator{
       this->to(time/2,max,0);
     }
 };
+
+class Motor{
+  private:
+    DigitalActuator pinLeft = new DigitalActuator(0);
+    DigitalActuator pinRight = new DigitalActuator(0);
+  public:
+  Motor(int pinLeft,int pinRight){
+    this->pinLeft.setPin(pinLeft);
+    this->pinRight.setPin(pinRight);
+  }
+  void init(){
+    this->pinLeft.Out();
+    this->pinRight.Out();
+  }
+  void left(){
+    this->pinLeft.On();
+    this->pinRight.Off();
+  }
+  void rigth(){
+    this->pinLeft.Off();
+    this->pinRight.On();
+  }
+  void stop(){
+    this->pinLeft.Off();
+    this->pinRight.Off();
+  }
+};
+
+/*class Move{
+  private:
+    Motor MotorL;
+    Motor MotorR;
+  public:
+    Move(Motor ML){
+      this->MotorL = ML;
+    }
+};*/
 
 //-------------------------------------
 /*
