@@ -95,6 +95,12 @@ class AnalogActuator: public AnalogPin{
     }
 };
 
+//-------------------------------------
+/*
+    Actuadores
+*/
+//-------------------------------------
+
 class Led: public DigitalActuator{
   private:
     AsyncDelay TimerLed;
