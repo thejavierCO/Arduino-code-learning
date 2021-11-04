@@ -194,9 +194,17 @@ class Move{
       this->MA = ML;
       this->MB = MR;
     }
+    void init(){
+      this->MA.init();
+      this->MB.init();
+    }
     void Run(){
       this->MA.left();
       this->MB.left();
+    }
+    void Back(){
+      this->MA.right();
+      this->MB.right();
     }
     void Stop(){
       this->MA.stop();
@@ -224,8 +232,7 @@ class UltrasonidoSensor{
     DigitalPin TriggerPin;
     DigitalPin EchoPin;
   public:
-    Ultrasonido(){}
-    Ultrasonido(int Tpin,int Epin){
+    UltrasonidoSensor(int Tpin,int Epin){
       this->TriggerPin.setPin(Tpin);
       this->EchoPin.setPin(Epin);
     }
@@ -255,10 +262,14 @@ class LineSensor{
     LineSensor(int pin){
       this->PinS.setPin(pin);
     }
+    void init(){
+      this->PinS.In();
+    }
     bool Value(){
       return this->PinS.Read();
     }
 };
+
 //-------------------------------------
 /*
     Debug
