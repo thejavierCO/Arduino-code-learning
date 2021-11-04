@@ -212,7 +212,7 @@ class Move{
 */
 //-------------------------------------
 
-class Ultrasonido{
+class UltrasonidoSensor{
   private:
     const float VelocidadSonido = 34000.0;
     DigitalPin TriggerPin;
@@ -242,6 +242,17 @@ class Ultrasonido{
     }
 };
 
+class LineSensor{
+  private:
+    DigitalPin PinS;
+  public:
+    LineSensor(int pin){
+      this->PinS.setPin(pin);
+    }
+    bool Value(){
+      return this->PinS.Read();
+    }
+};
 //-------------------------------------
 /*
     Debug
