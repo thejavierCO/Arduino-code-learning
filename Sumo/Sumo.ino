@@ -30,6 +30,7 @@ class Pin{
 
 class DigitalPin: public Pin {
   public:
+    DigitalPin():Pin(){}
     DigitalPin(int pin):Pin(pin){};
     bool Read(){
       return digitalRead(this->getPin());
@@ -151,8 +152,12 @@ class Motor{
     DigitalActuator pinLeft = new DigitalActuator(0);
     DigitalActuator pinRight = new DigitalActuator(0);
   public:
-  Motor(void){}
+  Motor(){}
   Motor(int pinLeft,int pinRight){
+    this->pinLeft.setPin(pinLeft);
+    this->pinRight.setPin(pinRight);
+  }
+  void use(int pinLeft,int pinRight){
     this->pinLeft.setPin(pinLeft);
     this->pinRight.setPin(pinRight);
   }
@@ -164,7 +169,7 @@ class Motor{
     this->pinLeft.On();
     this->pinRight.Off();
   }
-  void rigth(){
+  void right(){
     this->pinLeft.Off();
     this->pinRight.On();
   }
@@ -176,11 +181,64 @@ class Motor{
 
 class Move{
   private:
-    Motor MotorL = new Motor();
-    Motor MotorR = new Motor();
+    Motor MA;
+    Motor MB;
   public:
-    Move(Motor ML){
-      this->MotorL = ML;
+    Move(Motor ML,Motor MR){
+      this->MA = ML;
+      this->MB = MR;
+    }
+    void Run(){
+      this->MA.left();
+      this->MB.left();
+    }
+    void Stop(){
+      this->MA.stop();
+      this->MB.stop();
+    }
+    void Left(){
+      this->MA.left();
+      this->MB.right();
+    }
+    void Right(){
+      this->MA.right();
+      this->MB.left();
+    }
+};
+
+//-------------------------------------
+/*
+ * Sensors
+*/
+//-------------------------------------
+
+class Ultrasonido{
+  private:
+    const float VelocidadSonido = 34000.0;
+    DigitalPin TriggerPin;
+    DigitalPin EchoPin;
+  public:
+    Ultrasonido(){}
+    Ultrasonido(int Tpin,int Epin){
+      this->TriggerPin.setPin(Tpin);
+      this->EchoPin.setPin(Epin);
+    }
+    void init(){
+      this->TriggerPin.Out();
+      this->EchoPin.In();
+    }
+    void SendPulse(){
+      this->TriggerPin.Write(false);
+      delayMicroseconds(2);
+      this->TriggerPin.Write(true);
+      delayMicroseconds(10);
+      this->TriggerPin.Write(false);
+    }
+    unsigned long StatePulse(){
+     return pulseIn(this->EchoPin.getPin(), HIGH);
+    }
+    float cm(){
+      return this->StatePulse() * 0.000001 * this->VelocidadSonido / 2.0;
     }
 };
 
