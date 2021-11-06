@@ -1,5 +1,5 @@
-int AllForOne(bool AL ,bool AR){
-  return AL&&AR?0:AL||AR?1:0;
+int AllForOne(bool AL ,bool AR,bool invert = 0){
+  return AL==invert&&AR==invert?0:AL==invert||AR==invert?1:0;
 }
 
 void setup(){
@@ -14,17 +14,23 @@ void setup(){
 
 void loop(){
   US.SendPulse();
-  if(US.cm()<=15){
-      MoveRobot.Stop();
-      delay(500);
-    while(true){
-      US.SendPulse();
-      MoveRobot.Run();
-      delay(500);
-      MoveRobot.Stop();
-      delay(500);
-      break;
+  if(AllForOne(L0.Value(),L1.Value())){
+    MoveRobot.Back();
+    delay(280);
+  }else if(AllForOne(L2.Value(),L3.Value())){
+    MoveRobot.Run();
+    delay(280);
+  }else{
+    if(US.cm()<= 45){
+      TimerAtaque.start(500,AsyncDelay::MILLIS);
+      if(!TimerAtaque.isExpired()){
+        MoveRobot.Run();
+      }else{
+        TimerAtaque.restart();  
+      }
+    }else{
+      MoveRobot.Left();
     }
+    
   }
-  MoveRobot.Left();
 }
