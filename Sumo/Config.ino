@@ -13,5 +13,4 @@ LineSensor L3(5);// At R
 
 Move MoveRobot(MotorA,MotorB);
 
-
-    AsyncDelay TimerAtaque;
+AsyncDelay TimerAtaque;
