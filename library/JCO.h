@@ -106,11 +106,11 @@ class Move{
   public:
     Move(Motor ML,Motor MR);
     void init();
-    void Run();
-    void Back();
-    void Stop();
-    void Left();
-    void Right();
+    void run();
+    void back();
+    void stop();
+    void left();
+    void right();
 };
 
 //-------------------------------------
