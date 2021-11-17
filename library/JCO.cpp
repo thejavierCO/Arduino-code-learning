@@ -1,22 +1,20 @@
+
+/*
+
 #include "Arduino.h"
 #include "AsyncDelay.h"
 #include "JCO.h"
 
 //-------------------------------------
-/*
-    Basic Class
-*/
+//    Basic Class
 //-------------------------------------
+
+
 Pin::Pin(int pin){
     this->_pin = pin;
 }
 Pin::Pin(void){}
-int getPin(){
-    return this->_pin;
-}
-void Pin::setPin(int pin){
-    this->_pin = pin;
-}
+
 void Pin::Out(){
     pinMode(this->_pin,OUTPUT);
 }
@@ -24,34 +22,40 @@ void Pin::In(){
     pinMode(this->_pin,INPUT);
 }
 
+
+//-------------------------
+
+
 DigitalPin::DigitalPin():Pin(){}
 DigitalPin::DigitalPin(int pin):Pin(pin){};
 bool DigitalPin::Read(){
-    return digitalRead(this->getPin());
+    return digitalRead(DigitalPin::getPin());
 }
 void DigitalPin::Write(bool state){
-    digitalWrite(this->getPin(),state);
+    digitalWrite(DigitalPin::getPin(),state);
 }
 bool DigitalPin::If(bool value){
     return this->Read()==value;
 }
 
+//----------------------------
+
+AnalogPin::AnalogPin():Pin(){};
 AnalogPin::AnalogPin(int pin):Pin(pin){};
 long AnalogPin::Read(){
-    return analogRead(this->getPin());
+    return analogRead(AnalogPin::getPin());
 }
 void AnalogPin::Write(int state){
-    analogWrite(this->getPin(),state);
+    analogWrite(AnalogPin::getPin(),state);
 }
 bool AnalogPin::If(int value){
-    return this->Read()==value;
+    return AnalogPin::Read()==value;
 }
 
 //-------------------------------------
-/*
-    Tools
-*/
+//    Tools
 //-------------------------------------
+
 
 DigitalActuator::DigitalActuator(int pin):DigitalPin(pin){}
 void DigitalActuator::On(){
@@ -65,6 +69,8 @@ void DigitalActuator::Switch(){
     else if(this->If(false))this->On();
 }
 
+//----------
+
 AnalogActuator::AnalogActuator(int pin):AnalogPin(pin){}
 void AnalogActuator::Set(int number){
     this->Write(number);
@@ -76,10 +82,9 @@ void AnalogActuator::Switch(int rangeOn, int rangeOff){
     if(this->If(false))this->Set(rangeOn);
     else if(this->If(true))this->Set(rangeOff);
 }
+
 //-------------------------------------
-/*
-    Actuadores
-*/
+//    Actuadores
 //-------------------------------------
 
 Led::Led(int pin):DigitalActuator(pin){}
@@ -92,6 +97,8 @@ void Led::blink(){
     this->TimerLed.repeat();
     }
 }
+
+//-------------------------------------
 
 LedPWM::LedPWM(int pin):AnalogActuator(pin){}
 void LedPWM::to(int time, int start = 0,int end = 0){
@@ -124,6 +131,8 @@ void LedPWM::blink(int time, int max = 255){
     this->to(time/2,max,0);
 }
 
+//--------------------------------------------
+
 Motor::Motor(){}
 Motor::Motor(int pinLeft,int pinRight){
     this->pinLeft.setPin(pinLeft);
@@ -149,6 +158,8 @@ void Motor::stop(){
     this->pinLeft.Off();
     this->pinRight.Off();
 }
+
+//----------------------------------------
 
 Move::Move(Motor ML,Motor MR){
     this->MA = ML;
@@ -180,9 +191,7 @@ void Move::Right(){
 }
 
 //-------------------------------------
-/*
- * Sensors
-*/
+// Sensors
 //-------------------------------------
 
 UltrasonidoSensor::UltrasonidoSensor(int Tpin,int Epin){
@@ -207,6 +216,8 @@ float UltrasonidoSensor::cm(){
     return this->StatePulse() * 0.000001 * this->VelocidadSonido / 2.0;
 }
 
+//------------------------------------------
+
 LineSensor::LineSensor(int pin){
     this->PinS.setPin(pin);
 }
@@ -218,9 +229,7 @@ bool LineSensor::Value(){
 }
 
 //-------------------------------------
-/*
-    Debug
-*/
+//    Debug
 //-------------------------------------
 
 SerialConsole::SerialConsole(){}
@@ -237,3 +246,4 @@ void SerialConsole::ReadDigital(DigitalActuator obj){
 void SerialConsole::ReadAnalog(AnalogActuator obj){
     Serial.println(obj.Read());
 }
+*/
