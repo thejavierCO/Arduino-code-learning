@@ -1,5 +1,5 @@
-int AllForOne(bool AL ,bool AR,bool invert = 0){
-  return AL==invert&&AR==invert?0:AL==invert||AR==invert?1:0;
+int AllForOne(bool AL ,bool AR){
+  return AL&&AR?0:AL||AR?1:0;
 }
 
 void setup(){
